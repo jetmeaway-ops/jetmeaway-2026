@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jetmeaway — Your Personal Travel Scout</title>
+<meta name="description" content="Jetmeaway is your AI-powered travel scout. Compare flights, hotels, packages, car hire, activities, transfers, eSIM and insurance from 20+ trusted providers. Cleaner. Faster. Private.">
+<link rel="icon" type="image/png" href="jetmeaway-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<!-- Travelpayouts -->
+<script>(function(){var s=document.createElement("script");s.async=1;s.src='https://tp-em.com/NTEyNjMz.js?t=512633';document.head.appendChild(s)})()</script>
+<!-- CJ Affiliate -->
+<script async src="https://www.anrdoezrs.net/am/101712282/include/allCj/impressions/page/am.js"></script>
+
+<style>
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  JETMEAWAY — THE DARK SCOUT DASHBOARD                      ║
+   ║  Aesthetic: Midnight Gold · Glassmorphic · Luxury Tech      ║
+   ║  Typography: Syne (display) + Outfit (body)                 ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes glow{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+:root{
+  /* The Palette */
+  --midnight:#080B12;--dark:#0B0E14;--dark-2:#0F1219;--dark-3:#141821;--dark-4:#1A1F2B;
+  --glass:rgba(20,24,33,.55);--glass-border:rgba(255,255,255,.06);--glass-hover:rgba(255,255,255,.08);
+  --gold:#D4AF37;--gold-light:#F5D670;--gold-glow:rgba(212,175,55,.15);--gold-dim:rgba(212,175,55,.08);
+  --sky:#4BA3E3;--sky-glow:rgba(75,163,227,.1);
+  --text:#F0F2F5;--text-mid:#8A91A0;--text-dim:#525A6B;--text-faint:#363D4D;
+  --green:#34D399;--green-glow:rgba(52,211,153,.1);
+  --red:#F87171;--orange:#FB923C;--indigo:#818CF8;
+  /* Radii */
+  --r-full:100px;--r-xl:28px;--r-lg:20px;--r-md:14px;--r-sm:10px;--r-xs:6px;
+  /* Shadows */
+  --shadow-gold:0 0 40px rgba(212,175,55,.08);
+  --shadow-float:0 16px 48px rgba(0,0,0,.4);
+  --shadow-card:0 8px 32px rgba(0,0,0,.3);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--midnight);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+::selection{background:var(--gold);color:var(--dark)}
+h1,h2,h3{font-family:'Syne',sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:'Outfit',sans-serif}
+
+/* ═══════════ AMBIENT BACKGROUND ═══════════ */
+.ambient{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.ambient-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
+.ambient-orb.a1{width:500px;height:500px;background:radial-gradient(circle,rgba(212,175,55,.12),transparent 70%);top:-10%;right:-10%;animation:float 20s ease-in-out infinite}
+.ambient-orb.a2{width:400px;height:400px;background:radial-gradient(circle,rgba(75,163,227,.08),transparent 70%);bottom:20%;left:-8%;animation:float 25s ease-in-out infinite 5s}
+.ambient-orb.a3{width:300px;height:300px;background:radial-gradient(circle,rgba(129,140,248,.06),transparent 70%);top:40%;right:20%;animation:float 18s ease-in-out infinite 10s}
+.grain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ═══════════ NAVIGATION ═══════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 20px;animation:fadeIn 1s ease .2s both}
+.nav-glass{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);border:1px solid var(--glass-border);border-radius:var(--r-lg);padding:12px 24px;transition:all .3s}
+.nav-logo-img{height:32px;filter:drop-shadow(0 2px 8px rgba(212,175,55,.2))}
+.nav-links{display:none;gap:4px}
+@media(min-width:768px){.nav-links{display:flex}}
+.nav-link{font-size:.75rem;font-weight:600;color:var(--text-mid);padding:8px 14px;border-radius:var(--r-sm);transition:all .25s;letter-spacing:.3px}
+.nav-link:hover{color:var(--gold);background:var(--gold-dim)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-btn{background:var(--gold);color:var(--dark);font-weight:700;font-size:.78rem;padding:8px 20px;border:none;border-radius:var(--r-sm);cursor:pointer;transition:all .25s;letter-spacing:.3px}
+.nav-btn:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:var(--shadow-gold)}
+.hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+@media(min-width:768px){.hamburger{display:none}}
+.hamburger span{width:20px;height:1.5px;background:var(--text-mid);border-radius:2px;transition:.3s}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(8,11,18,.8);backdrop-filter:blur(4px);z-index:150}
+.mob-overlay.open{display:block}
+.mob-menu{display:none;position:fixed;top:0;right:-100%;width:280px;height:100%;background:var(--dark-2);z-index:200;padding:80px 24px;transition:right .35s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--glass-border);flex-direction:column;gap:4px}
+.mob-menu.open{right:0;display:flex}
+.mob-menu a{padding:14px 16px;color:var(--text-mid);font-weight:600;font-size:.92rem;border-radius:var(--r-sm);transition:.2s}
+.mob-menu a:hover{color:var(--gold);background:var(--gold-dim)}
+
+/* ═══════════ HERO — THE HOOK ═══════════ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 20px 60px;position:relative;z-index:2;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid rgba(212,175,55,.15);border-radius:var(--r-full);padding:8px 20px;font-size:.7rem;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .8s ease .4s both}
+.hero-badge i{animation:glow 2s ease-in-out infinite}
+.hero h1{font-size:3rem;font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:18px;animation:fadeUp .8s ease .6s both}
+@media(min-width:768px){.hero h1{font-size:4.8rem;letter-spacing:-3px}}
+.hero h1 .gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
+.hero-sub{color:var(--text-mid);font-size:1.05rem;font-weight:400;max-width:440px;line-height:1.6;margin-bottom:48px;animation:fadeUp .8s ease .8s both}
+
+/* ═══════════ SEARCH — THE COMMAND CENTER ═══════════ */
+.search-wrap{width:100%;max-width:640px;animation:fadeUp .8s ease 1s both}
+.search-card{background:var(--glass);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);border:1px solid var(--glass-border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-float);transition:box-shadow .3s}
+.search-card:focus-within{box-shadow:var(--shadow-float),0 0 0 1px var(--gold-dim)}
+
+/* Tabs */
+.stabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--glass-border);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.stabs::-webkit-scrollbar{display:none}
+.stab{flex-shrink:0;padding:14px 15px;font-size:.72rem;font-weight:600;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;display:flex;align-items:center;gap:5px;white-space:nowrap;letter-spacing:.2px}
+.stab:hover{color:var(--text-mid)}
+.stab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.stab .emoji{font-size:.9rem}
+
+/* Panels */
+.tpanel{display:none;padding:20px}
+.tpanel.active{display:block;animation:fadeIn .3s ease}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.sg{grid-template-columns:1fr}}
+.sf{display:flex;flex-direction:column;gap:3px;position:relative}
+.sf.full{grid-column:1/-1}
+.sl{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim)}
+.si{padding:11px 13px;background:var(--dark-3);border:1px solid var(--glass-border);border-radius:var(--r-xs);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;color:var(--text);outline:none;transition:border-color .25s;width:100%}
+.si:focus{border-color:rgba(212,175,55,.3)}
+.si::placeholder{color:var(--text-dim)}
+select.si{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23525A6B' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
+.search-info{font-size:.7rem;color:var(--text-dim);text-align:center;padding:6px 16px 14px;line-height:1.4}
+.search-info strong{color:var(--text-mid)}
+
+/* The Golden Search Button */
+.search-go{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);border:none;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px;transition:all .3s}
+.search-go:hover{filter:brightness(1.1);letter-spacing:1px}
+.search-go i{font-size:.85rem;transition:transform .3s}
+.search-go:hover i{transform:translateX(3px)}
+
+/* Partner Strip */
+.pstrip{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:24px;animation:fadeUp .8s ease 1.2s both}
+.pstrip span{font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;color:var(--text-faint);letter-spacing:.5px;transition:color .3s}
+.pstrip span:hover{color:var(--text-dim)}
+.pstrip .dot{width:2px;height:2px;border-radius:50%;background:var(--text-faint)}
+.trust-pills{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:16px;animation:fadeUp .8s ease 1.4s both}
+.tpill{display:flex;align-items:center;gap:5px;font-size:.68rem;font-weight:500;color:var(--text-dim)}
+.tpill i{color:var(--gold);font-size:.6rem}
+
+/* ═══════════ AUTOCOMPLETE ═══════════ */
+.acd{display:none;position:absolute;top:100%;left:0;right:0;background:var(--dark-3);border:1px solid var(--glass-border);border-radius:var(--r-xs);box-shadow:var(--shadow-card);z-index:50;max-height:200px;overflow-y:auto;margin-top:3px}
+.acd.show{display:block}
+.aci{padding:9px 12px;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--text-mid);transition:.15s;display:flex;align-items:center;gap:7px}
+.aci:hover,.aci.hl{background:var(--gold-dim);color:var(--gold)}
+.aci .acc{font-size:.62rem;font-weight:700;color:var(--text-dim);margin-left:auto;letter-spacing:1px}
+
+/* ═══════════ RESULTS — THE REVEAL ═══════════ */
+.results-section{max-width:1100px;margin:0 auto;padding:0 20px 40px;position:relative;z-index:2}
+.results-layout{display:flex;gap:24px;flex-direction:column}
+@media(min-width:1024px){.results-layout{flex-direction:row}}
+.results-main{flex:1;min-width:0}
+.results-side{width:100%}
+@media(min-width:1024px){.results-side{width:280px;position:sticky;top:90px;align-self:flex-start}}
+.rlabel{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
+.rtitle{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:24px;letter-spacing:-.5px}
+
+/* Result Card */
+.rcard{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:var(--r-xl);padding:24px;margin-bottom:16px;transition:all .35s;animation:slideUp .6s ease both}
+.rcard:nth-child(2){animation-delay:.1s}.rcard:nth-child(3){animation-delay:.2s}.rcard:nth-child(4){animation-delay:.3s}
+.rcard:hover{border-color:rgba(212,175,55,.12);box-shadow:var(--shadow-gold)}
+.rcard-inner{display:flex;flex-direction:column;gap:20px}
+@media(min-width:768px){.rcard-inner{flex-direction:row;gap:24px}}
+.rcard-main{flex:1}
+.rcard-airline{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.rcard-logo{width:36px;height:36px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:var(--dark-4);border:1px solid var(--glass-border)}
+.rcard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;color:var(--text);letter-spacing:-.2px}
+.rcard-sub{font-size:.68rem;color:var(--text-dim);font-weight:500}
+.rcard-badge{font-size:.55rem;font-weight:700;padding:4px 10px;border-radius:var(--r-full);text-transform:uppercase;letter-spacing:.5px;margin-left:auto}
+.rcard-badge.best{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,175,55,.15)}
+.rcard-badge.budget{background:var(--green-glow);color:var(--green);border:1px solid rgba(52,211,153,.15)}
+.rcard-route{display:flex;align-items:center}
+.rtime{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text);letter-spacing:-1px}
+.rcode{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-top:3px}
+.rline{flex:1;padding:0 16px;text-align:center}
+.rline-type{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:8px}
+.rline-bar{height:1px;background:var(--text-faint);position:relative}
+.rline-bar::after{content:'';position:absolute;top:-3.5px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold-glow)}
+.rline-dur{font-size:.58rem;font-weight:600;color:var(--text-dim);margin-top:8px;font-style:italic;letter-spacing:.3px}
+
+/* JetInsight Panel */
+.rpanel{width:100%;background:var(--dark-3);border:1px solid var(--glass-border);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+@media(min-width:768px){.rpanel{width:230px}}
+.rai-badge{display:inline-flex;align-items:center;gap:4px;background:var(--gold);color:var(--dark);font-size:.5rem;font-weight:800;padding:4px 8px;border-radius:var(--r-xs);text-transform:uppercase;letter-spacing:1.5px;width:fit-content}
+.rai-text{font-size:.72rem;color:var(--text-mid);line-height:1.6;margin-top:8px}
+.rai-text strong{color:var(--green);font-weight:700}
+.rprice-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.rprice{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-1px}
+.rprice-btn{background:var(--gold);color:var(--dark);padding:10px 18px;border-radius:var(--r-sm);font-size:.72rem;font-weight:700;transition:all .25s;letter-spacing:.3px}
+.rprice-btn:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:var(--shadow-gold)}
+.ralt-row{display:flex;gap:6px;margin-top:10px}
+.ralt{flex:1;display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--dark-4);border:1px solid var(--glass-border);border-radius:var(--r-xs);font-size:.68rem;transition:.2s}
+.ralt:hover{border-color:rgba(212,175,55,.2)}
+.ralt-name{color:var(--text-dim);font-weight:600}
+.ralt-price{font-weight:700;color:var(--text-mid)}
+.ralt-price.low{color:var(--green)}
+
+/* Hotel Card */
+.hcard{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:var(--r-xl);margin-bottom:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .35s;animation:slideUp .6s ease .3s both}
+.hcard:hover{border-color:rgba(212,175,55,.12);box-shadow:var(--shadow-gold)}
+@media(min-width:768px){.hcard{flex-direction:row}}
+.hcard-img{width:100%;height:160px;background:linear-gradient(135deg,var(--dark-3),var(--dark-4));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative}
+@media(min-width:768px){.hcard-img{width:200px;height:auto}}
+.hcard-rating{position:absolute;top:10px;left:10px;background:var(--gold);color:var(--dark);font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem;padding:4px 10px;border-radius:var(--r-xs)}
+.hcard-body{flex:1;padding:18px;display:flex;flex-direction:column;gap:5px}
+.hcard-stars{color:var(--gold);font-size:.78rem;letter-spacing:2px}
+.hcard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text);letter-spacing:-.2px}
+.hcard-loc{font-size:.72rem;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:5px}
+.hcard-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.hcard-tag{font-size:.6rem;font-weight:600;padding:3px 8px;background:var(--dark-4);border:1px solid var(--glass-border);border-radius:var(--r-full);color:var(--text-dim)}
+.hcard-prices{width:100%;padding:18px;background:var(--dark-3);display:flex;flex-direction:column;gap:8px;justify-content:center}
+@media(min-width:768px){.hcard-prices{width:220px;border-left:1px solid var(--glass-border)}}
+.hprice-top{display:flex;justify-content:space-between;align-items:flex-end}
+.hprice-label{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim)}
+.hprice-amount{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text)}
+.hprice-btn{display:block;width:100%;padding:10px;background:var(--gold);color:var(--dark);text-align:center;font-weight:700;font-size:.78rem;border-radius:var(--r-sm);transition:.25s;letter-spacing:.3px}
+.hprice-btn:hover{background:var(--gold-light);box-shadow:var(--shadow-gold)}
+.hprice-alt{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--dark-4);border:1px solid var(--glass-border);border-radius:var(--r-xs);font-size:.7rem;transition:.2s}
+.hprice-alt:hover{border-color:rgba(212,175,55,.2)}
+
+/* ═══════════ ESSENTIALS SIDEBAR ═══════════ */
+.eside{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:var(--r-xl);padding:20px;animation:slideUp .6s ease .4s both}
+.eside-title{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:6px}
+.eitem{display:block;padding:14px;margin-bottom:8px;border-radius:var(--r-md);border:1px solid transparent;transition:all .25s}
+.eitem:hover{background:var(--glass-hover);border-color:var(--glass-border)}
+.eitem-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.eitem-name{font-size:.78rem;font-weight:700;color:var(--gold)}
+.eitem-badge{font-size:.5rem;font-weight:700;background:var(--dark-4);padding:3px 7px;border-radius:var(--r-xs);color:var(--text-dim);border:1px solid var(--glass-border)}
+.eitem-desc{font-size:.7rem;color:var(--text-dim);line-height:1.5}
+.eitem-cta{display:flex;align-items:center;gap:3px;font-size:.62rem;font-weight:700;margin-top:8px;color:var(--gold);transition:gap .2s}
+.eitem:hover .eitem-cta{gap:6px}
+.eside-foot{margin-top:14px;padding-top:14px;border-top:1px solid var(--glass-border);text-align:center;font-size:.55rem;color:var(--text-faint)}
+
+/* ═══════════ CATEGORIES ═══════════ */
+.cats{max-width:1100px;margin:48px auto 0;padding:0 20px;position:relative;z-index:2}
+.cats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.cats-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1024px){.cats-grid{grid-template-columns:repeat(5,1fr)}}
+.ccard{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--r-md);padding:18px 14px;text-align:center;cursor:pointer;transition:all .25s}
+.ccard:hover{border-color:rgba(212,175,55,.15);background:var(--glass-hover);transform:translateY(-2px)}
+.ccard-icon{font-size:1.6rem;margin-bottom:6px}
+.ccard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--text);margin-bottom:2px}
+.ccard-sub{font-size:.6rem;color:var(--text-dim)}
+
+/* ═══════════ APP PROMO ═══════════ */
+.app{max-width:1100px;margin:48px auto 0;padding:0 20px;position:relative;z-index:2}
+.app-card{background:linear-gradient(135deg,var(--dark-3),var(--dark-4));border:1px solid var(--glass-border);border-radius:var(--r-xl);padding:40px;position:relative;overflow:hidden}
+.app-card::before{content:'';position:absolute;top:-30%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,var(--gold-glow),transparent 70%);border-radius:50%}
+.app-inner{position:relative;z-index:1;max-width:480px}
+.app-tag{display:inline-block;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gold);background:var(--gold-dim);border:1px solid rgba(212,175,55,.1);padding:5px 12px;border-radius:var(--r-full);margin-bottom:16px}
+.app-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:10px;letter-spacing:-.5px}
+.app-title em{color:var(--gold);font-style:italic}
+.app-desc{font-size:.82rem;color:var(--text-dim);line-height:1.7;margin-bottom:20px}
+.app-stores{display:flex;gap:8px;flex-wrap:wrap;opacity:.25}
+.app-st{display:flex;align-items:center;gap:8px;background:var(--dark-4);border:1px solid var(--glass-border);padding:8px 14px;border-radius:var(--r-sm);color:var(--text-dim)}
+.app-st i{font-size:1.2rem}
+.app-st-label{font-size:.48rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:.5px}
+.app-st-name{font-weight:700;font-size:.78rem;color:var(--text-dim)}
+.app-launch{font-size:.62rem;color:var(--text-faint);font-style:italic;margin-top:10px}
+
+/* ═══════════ TRUST ═══════════ */
+.trust{max-width:1100px;margin:48px auto 0;padding:0 20px;position:relative;z-index:2}
+.trust-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:768px){.trust-grid{grid-template-columns:repeat(3,1fr)}}
+.tcard{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--r-md);padding:24px;text-align:center;transition:.3s}
+.tcard:hover{border-color:rgba(212,175,55,.1)}
+.tcard-icon{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.1rem}
+.tcard-icon.free{background:var(--gold-dim);color:var(--gold)}
+.tcard-icon.safe{background:var(--green-glow);color:var(--green)}
+.tcard-icon.fast{background:var(--sky-glow);color:var(--sky)}
+.tcard-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:4px}
+.tcard-desc{font-size:.72rem;color:var(--text-dim);line-height:1.7}
+
+/* ═══════════ FOOTER ═══════════ */
+.footer{background:var(--dark);border-top:1px solid var(--glass-border);margin-top:64px;padding:48px 20px 24px;position:relative;z-index:2}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-bottom:36px}
+@media(min-width:768px){.footer-grid{grid-template-columns:1.4fr 1fr 1fr 1.2fr}}
+.footer-logo{height:28px;filter:drop-shadow(0 2px 8px rgba(212,175,55,.15));margin-bottom:10px}
+.footer-desc{font-size:.72rem;color:var(--text-faint);line-height:1.7}
+.footer-col h4{font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--text-dim);margin-bottom:14px}
+.footer-col a{display:block;font-size:.72rem;color:var(--text-faint);margin-bottom:8px;transition:.2s}
+.footer-col a:hover{color:var(--gold)}
+.footer-email{display:flex;border-radius:var(--r-xs);overflow:hidden;border:1px solid var(--glass-border)}
+.footer-email input{flex:1;background:var(--dark-3);border:none;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--text);outline:none}
+.footer-email input::placeholder{color:var(--text-faint)}
+.footer-email button{background:var(--gold);color:var(--dark);border:none;padding:10px 16px;font-size:.68rem;font-weight:700;cursor:pointer;transition:.2s}
+.footer-email button:hover{background:var(--gold-light)}
+.footer-div{height:1px;background:var(--glass-border);margin-bottom:20px}
+.footer-disc{max-width:800px;margin-bottom:20px}
+.footer-disc-label{font-size:.5rem;text-transform:uppercase;letter-spacing:2.5px;font-weight:700;color:var(--text-faint);margin-bottom:5px}
+.footer-disc p{font-size:.62rem;color:rgba(255,255,255,.08);line-height:1.8}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-copy{font-size:.55rem;color:rgba(255,255,255,.06)}
+.footer-logos{display:flex;gap:14px;opacity:.06;transition:.3s}
+.footer-logos:hover{opacity:.15}
+.footer-logos span{font-family:'Syne',sans-serif;font-weight:700;font-size:.58rem;color:#fff}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:767px){
+  .hero{padding:100px 16px 40px;min-height:auto}
+  .hero h1{font-size:2.4rem;letter-spacing:-1px}
+  .rcard-route{flex-wrap:wrap;justify-content:center}
+  .rline{width:100%;order:3;padding:10px 0}
+  .ralt-row{flex-direction:column}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .footer-logos{flex-wrap:wrap;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient Background -->
+<div class="ambient">
+  <div class="ambient-orb a1"></div>
+  <div class="ambient-orb a2"></div>
+  <div class="ambient-orb a3"></div>
+</div>
+<div class="grain"></div>
+
+<!-- ═══ NAV ═══ -->
+<header class="nav">
+  <div class="nav-glass">
+    <a href="/"><img src="jetmeaway-logo.png" alt="Jetmeaway" class="nav-logo-img"></a>
+    <div class="nav-links">
+      <a href="#" class="nav-link">Flights</a>
+      <a href="#" class="nav-link">Hotels</a>
+      <a href="#" class="nav-link">Packages</a>
+      <a href="#" class="nav-link">Activities</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+    <div class="nav-right">
+      <a href="contact.html" class="nav-btn">Contact</a>
+      <div class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+<div class="mob-overlay" id="mobO" onclick="toggleMob()"></div>
+<div class="mob-menu" id="mobM">
+  <a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-badge"><i class="fa-solid fa-sparkles"></i> Your Personal Travel Scout</div>
+  <h1>Travel<br><span class="gold">Intelligently.</span></h1>
+  <p class="hero-sub">One search. 20+ providers compared. The best deal found — without visiting 20 different sites.</p>
+
+  <div class="search-wrap">
+    <div class="search-card">
+      <div class="stabs">
+        <div class="stab active" data-tab="flights"><span class="emoji">✈️</span> Flights</div>
+        <div class="stab" data-tab="hotels"><span class="emoji">🏨</span> Hotels</div>
+        <div class="stab" data-tab="packages"><span class="emoji">📦</span> Packages</div>
+        <div class="stab" data-tab="cars"><span class="emoji">🚗</span> Cars</div>
+        <div class="stab" data-tab="activities"><span class="emoji">🎯</span> Activities</div>
+        <div class="stab" data-tab="transfers"><span class="emoji">🚐</span> Transfers</div>
+        <div class="stab" data-tab="esim"><span class="emoji">📱</span> eSIM</div>
+        <div class="stab" data-tab="insurance"><span class="emoji">🛡️</span> Insurance</div>
+      </div>
+
+      <!-- FLIGHTS -->
+      <div class="tpanel active" id="tp-flights">
+        <div class="sg">
+          <div class="sf"><label class="sl">From</label><input class="si js-ac" data-actype="airport" placeholder="London Heathrow" id="f-from" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">To</label><input class="si js-ac" data-actype="airport" placeholder="Dubai" id="f-to" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Depart</label><input type="date" class="si" id="f-dep"></div>
+          <div class="sf"><label class="sl">Return</label><input type="date" class="si" id="f-ret"></div>
+          <div class="sf"><label class="sl">Adults</label><select class="si" id="f-pax"><option>1 Adult</option><option selected>2 Adults</option><option>3 Adults</option><option>4 Adults</option></select></div>
+          <div class="sf"><label class="sl">Class</label><select class="si" id="f-cls"><option>Economy</option><option>Premium Economy</option><option>Business</option><option>First</option></select></div>
+        </div>
+        <div class="search-info">Scouting <strong>Expedia</strong> &amp; <strong>Aviasales</strong></div>
+      </div>
+
+      <!-- HOTELS -->
+      <div class="tpanel" id="tp-hotels">
+        <div class="sg">
+          <div class="sf"><label class="sl">Destination</label><input class="si js-ac" data-actype="destination" placeholder="Marbella, Spain" id="h-dest" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Stars</label><select class="si"><option>Any</option><option>3★</option><option>4★</option><option>5★</option></select></div>
+          <div class="sf"><label class="sl">Check-in</label><input type="date" class="si" id="h-ci"></div>
+          <div class="sf"><label class="sl">Check-out</label><input type="date" class="si" id="h-co"></div>
+          <div class="sf"><label class="sl">Guests</label><select class="si" id="h-guests"><option>1 Guest</option><option selected>2 Guests</option><option>3 Guests</option><option>4 Guests</option></select></div>
+          <div class="sf"><label class="sl">Rooms</label><select class="si" id="h-rooms"><option selected>1 Room</option><option>2 Rooms</option><option>3 Rooms</option></select></div>
+        </div>
+        <div class="search-info">Scouting <strong>Expedia</strong> &amp; <strong>Booking.com</strong></div>
+      </div>
+
+      <!-- PACKAGES -->
+      <div class="tpanel" id="tp-packages">
+        <div class="sg">
+          <div class="sf"><label class="sl">From</label><input class="si js-ac" data-actype="airport" placeholder="Manchester" id="p-from" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Destination</label><input class="si js-ac" data-actype="destination" placeholder="Tenerife" id="p-to" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Depart</label><input type="date" class="si" id="p-dep"></div>
+          <div class="sf"><label class="sl">Nights</label><select class="si" id="p-dur"><option>3</option><option>5</option><option selected>7</option><option>10</option><option>14</option></select></div>
+          <div class="sf"><label class="sl">Adults</label><select class="si" id="p-pax"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+          <div class="sf"><label class="sl">Board</label><select class="si"><option>All Inclusive</option><option>Half Board</option><option>B&amp;B</option><option>Self Catering</option></select></div>
+        </div>
+        <div class="search-info">Scouting <strong>Expedia</strong> Flight+Hotel</div>
+      </div>
+
+      <!-- CARS -->
+      <div class="tpanel" id="tp-cars">
+        <div class="sg">
+          <div class="sf"><label class="sl">Pick-up</label><input class="si js-ac" data-actype="destination" placeholder="Malaga Airport" id="c-loc" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Type</label><select class="si"><option>Any</option><option>Economy</option><option>Compact</option><option>SUV</option><option>Luxury</option></select></div>
+          <div class="sf"><label class="sl">Pick-up</label><input type="date" class="si" id="c-pu"></div>
+          <div class="sf"><label class="sl">Drop-off</label><input type="date" class="si" id="c-do"></div>
+        </div>
+        <div class="search-info">Scouting <strong>Expedia</strong>, <strong>Economy Bookings</strong>, <strong>Localrent</strong>, <strong>Qeeq</strong> &amp; <strong>GetRentaCar</strong></div>
+      </div>
+
+      <!-- ACTIVITIES -->
+      <div class="tpanel" id="tp-activities">
+        <div class="sg">
+          <div class="sf"><label class="sl">Destination</label><input class="si js-ac" data-actype="destination" placeholder="Antalya, Turkey" id="a-dest" autocomplete="off"><div class="acd"></div></div>
+          <div class="sf"><label class="sl">Date</label><input type="date" class="si" id="a-date"></div>
+        </div>
+        <div class="search-info">Scouting <strong>GetYourGuide</strong>, <strong>Klook</strong>, <strong>Tiqets</strong>, <strong>Viator</strong> &amp; <strong>WeGoTrip</strong></div>
+      </div>
+
+      <!-- TRANSFERS -->
+      <div class="tpanel" id="tp-transfers">
+        <div class="sg"><div class="sf full"><label class="sl">Destination / Airport</label><input class="si js-ac" data-actype="destination" placeholder="Antalya, Turkey" id="t-dest" autocomplete="off"><div class="acd"></div></div></div>
+        <div class="search-info">Scouting <strong>KiwiTaxi</strong>, <strong>Welcome Pickups</strong> &amp; <strong>GetTransfer</strong></div>
+      </div>
+
+      <!-- eSIM -->
+      <div class="tpanel" id="tp-esim">
+        <div class="sg"><div class="sf full"><label class="sl">Country</label><input class="si js-ac" data-actype="destination" placeholder="Turkey, Spain, USA..." id="e-dest" autocomplete="off"><div class="acd"></div></div></div>
+        <div class="search-info">Scouting <strong>Airalo</strong> &amp; <strong>Yesim</strong> — from $4.50</div>
+      </div>
+
+      <!-- INSURANCE -->
+      <div class="tpanel" id="tp-insurance">
+        <div class="sg"><div class="sf full"><label class="sl">Destination</label><input class="si js-ac" data-actype="destination" placeholder="Where are you travelling?" id="i-dest" autocomplete="off"><div class="acd"></div></div></div>
+        <div class="search-info">Medical, cancellation &amp; luggage cover from <strong>Ekta Traveling</strong></div>
+      </div>
+
+      <button class="search-go" onclick="doSearch()"><i class="fa-solid fa-magnifying-glass"></i> Scout Deals</button>
+    </div>
+  </div>
+
+  <div class="pstrip">
+    <span>Expedia</span><div class="dot"></div><span>Booking.com</span><div class="dot"></div><span>GetYourGuide</span><div class="dot"></div><span>Airalo</span><div class="dot"></div><span>Viator</span><div class="dot"></div><span>Klook</span>
+  </div>
+  <div class="trust-pills">
+    <div class="tpill"><i class="fa-solid fa-circle-check"></i> 100% Free</div>
+    <div class="tpill"><i class="fa-solid fa-circle-check"></i> No Hidden Fees</div>
+    <div class="tpill"><i class="fa-solid fa-circle-check"></i> 20+ Providers</div>
+  </div>
+</section>
+
+<!-- ═══ RESULTS ═══ -->
+<div class="results-section">
+  <div class="results-layout">
+    <div class="results-main">
+      <div class="rlabel">Scout Results</div>
+      <div class="rtitle">London → Dubai · 2 Adults</div>
+
+      <div class="rcard">
+        <div class="rcard-inner">
+          <div class="rcard-main">
+            <div class="rcard-airline">
+              <div class="rcard-logo">🇦🇪</div>
+              <div><div class="rcard-name">Emirates</div><div class="rcard-sub">Direct · Economy</div></div>
+              <div class="rcard-badge best"><i class="fa-solid fa-bolt" style="font-size:.5rem"></i> Scout's Pick</div>
+            </div>
+            <div class="rcard-route">
+              <div><div class="rtime">10:20</div><div class="rcode">London LHR</div></div>
+              <div class="rline"><div class="rline-type">Non-stop</div><div class="rline-bar"></div><div class="rline-dur">7h 15m</div></div>
+              <div><div class="rtime">20:35</div><div class="rcode">Dubai DXB</div></div>
+            </div>
+          </div>
+          <div class="rpanel">
+            <div><div class="rai-badge"><i class="fa-solid fa-bolt"></i> JetInsight</div><p class="rai-text">Prices are <strong>14% lower</strong> than the 90-day average.</p></div>
+            <div class="rprice-row"><span class="rprice">£412</span><a href="#" class="rprice-btn">View Deal</a></div>
+            <div class="ralt-row">
+              <a href="#" class="ralt"><span class="ralt-name">Expedia</span><span class="ralt-price">£415</span></a>
+              <a href="#" class="ralt"><span class="ralt-name">Booking</span><span class="ralt-price low">£408</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="rcard-inner">
+          <div class="rcard-main">
+            <div class="rcard-airline">
+              <div class="rcard-logo">🇬🇧</div>
+              <div><div class="rcard-name">British Airways</div><div class="rcard-sub">Direct · Economy</div></div>
+            </div>
+            <div class="rcard-route">
+              <div><div class="rtime">14:45</div><div class="rcode">London LHR</div></div>
+              <div class="rline"><div class="rline-type">Non-stop</div><div class="rline-bar"></div><div class="rline-dur">6h 50m</div></div>
+              <div><div class="rtime">01:35</div><div class="rcode">Dubai DXB</div></div>
+            </div>
+          </div>
+          <div class="rpanel">
+            <div><div class="rai-badge"><i class="fa-solid fa-bolt"></i> JetInsight</div><p class="rai-text">Fastest route. Price is <strong>stable</strong>.</p></div>
+            <div class="rprice-row"><span class="rprice">£489</span><a href="#" class="rprice-btn">View Deal</a></div>
+            <div class="ralt-row">
+              <a href="#" class="ralt"><span class="ralt-name">Expedia</span><span class="ralt-price low">£479</span></a>
+              <a href="#" class="ralt"><span class="ralt-name">Aviasales</span><span class="ralt-price">£492</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="rcard-inner">
+          <div class="rcard-main">
+            <div class="rcard-airline">
+              <div class="rcard-logo">🇹🇷</div>
+              <div><div class="rcard-name">Turkish Airlines</div><div class="rcard-sub">1 Stop (IST)</div></div>
+              <div class="rcard-badge budget"><i class="fa-solid fa-tag" style="font-size:.5rem"></i> Budget</div>
+            </div>
+            <div class="rcard-route">
+              <div><div class="rtime">07:30</div><div class="rcode">London LHR</div></div>
+              <div class="rline"><div class="rline-type" style="color:var(--orange)">1 Stop</div><div class="rline-bar"></div><div class="rline-dur">10h 25m</div></div>
+              <div><div class="rtime">21:55</div><div class="rcode">Dubai DXB</div></div>
+            </div>
+          </div>
+          <div class="rpanel">
+            <div><div class="rai-badge" style="background:var(--green)"><i class="fa-solid fa-tag"></i> Budget</div><p class="rai-text"><strong>£73 cheaper</strong> than direct flights.</p></div>
+            <div class="rprice-row"><span class="rprice">£298</span><a href="#" class="rprice-btn">View Deal</a></div>
+            <div class="ralt-row">
+              <a href="#" class="ralt"><span class="ralt-name">Expedia</span><span class="ralt-price">£305</span></a>
+              <a href="#" class="ralt"><span class="ralt-name">Aviasales</span><span class="ralt-price low">£289</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rlabel" style="margin-top:28px">Hotels</div>
+      <div class="rtitle">Top Stays in Dubai</div>
+
+      <div class="hcard">
+        <div class="hcard-img">🏨<div class="hcard-rating">9.2</div></div>
+        <div class="hcard-body">
+          <div class="hcard-stars">★★★★★</div>
+          <div class="hcard-name">Marina Bay Resort</div>
+          <div class="hcard-loc"><i class="fa-solid fa-location-dot" style="font-size:.6rem"></i> Dubai Marina · Beach access</div>
+          <div class="hcard-tags"><span class="hcard-tag">WiFi</span><span class="hcard-tag">Pool</span><span class="hcard-tag">Free Cancel</span><span class="hcard-tag">Breakfast</span></div>
+        </div>
+        <div class="hcard-prices">
+          <div class="hprice-top"><span class="hprice-label">Per night</span><span class="hprice-amount">£189</span></div>
+          <a href="#" class="hprice-btn">Booking.com →</a>
+          <a href="#" class="hprice-alt"><span style="color:var(--text-dim)">Expedia</span><span style="font-weight:700;color:var(--text-mid)">£195</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="results-side">
+      <div class="eside">
+        <div class="eside-title"><i class="fa-solid fa-suitcase-rolling"></i> Travel Essentials</div>
+        <a href="https://tp.media/r?campaign_id=541&marker=714449&p=8310&trs=512633&u=https%3A%2F%2Fwww.airalo.com%2F" target="_blank" rel="noopener" class="eitem">
+          <div class="eitem-top"><span class="eitem-name">eSIM Data</span><span class="eitem-badge">Airalo</span></div>
+          <div class="eitem-desc">200+ countries from $4.50. No SIM swap.</div>
+          <div class="eitem-cta">Get eSIM <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="https://tp.media/r?campaign_id=225&marker=714449&p=5869&trs=512633&u=https%3A%2F%2Fektatraveling.com" target="_blank" rel="noopener" class="eitem">
+          <div class="eitem-top"><span class="eitem-name">Insurance</span><span class="eitem-badge">Ekta</span></div>
+          <div class="eitem-desc">Medical, cancel &amp; luggage from £3/day.</div>
+          <div class="eitem-cta">Protect Trip <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="https://tp.media/r?campaign_id=1&marker=714449&p=647&trs=512633&u=https%3A%2F%2Fkiwitaxi.com" target="_blank" rel="noopener" class="eitem">
+          <div class="eitem-top"><span class="eitem-name">Transfers</span><span class="eitem-badge">KiwiTaxi</span></div>
+          <div class="eitem-desc">Airport to hotel. Book ahead.</div>
+          <div class="eitem-cta">Book Ride <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="https://tp.media/r?campaign_id=120&marker=714449&p=9139&trs=512633&u=https%3A%2F%2Fairhelp.com" target="_blank" rel="noopener" class="eitem">
+          <div class="eitem-top"><span class="eitem-name">Flight Delayed?</span><span class="eitem-badge">AirHelp</span></div>
+          <div class="eitem-desc">Claim up to €600. No win, no fee.</div>
+          <div class="eitem-cta">Check Claim <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <div class="eside-foot">Scout-Verified Partners 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CATEGORIES ═══ -->
+<div class="cats">
+  <div class="rlabel">Browse</div>
+  <div class="rtitle">Everything You Need</div>
+  <div class="cats-grid">
+    <div class="ccard" onclick="switchTab('flights')"><div class="ccard-icon">✈️</div><div class="ccard-name">Flights</div><div class="ccard-sub">2 providers</div></div>
+    <div class="ccard" onclick="switchTab('hotels')"><div class="ccard-icon">🏨</div><div class="ccard-name">Hotels</div><div class="ccard-sub">2 providers</div></div>
+    <div class="ccard" onclick="switchTab('packages')"><div class="ccard-icon">📦</div><div class="ccard-name">Packages</div><div class="ccard-sub">Flight+Hotel</div></div>
+    <div class="ccard" onclick="switchTab('cars')"><div class="ccard-icon">🚗</div><div class="ccard-name">Car Hire</div><div class="ccard-sub">5 providers</div></div>
+    <div class="ccard" onclick="switchTab('activities')"><div class="ccard-icon">🎯</div><div class="ccard-name">Activities</div><div class="ccard-sub">5 providers</div></div>
+    <div class="ccard" onclick="switchTab('transfers')"><div class="ccard-icon">🚐</div><div class="ccard-name">Transfers</div><div class="ccard-sub">3 providers</div></div>
+    <div class="ccard" onclick="switchTab('esim')"><div class="ccard-icon">📱</div><div class="ccard-name">eSIM</div><div class="ccard-sub">2 providers</div></div>
+    <div class="ccard" onclick="switchTab('insurance')"><div class="ccard-icon">🛡️</div><div class="ccard-name">Insurance</div><div class="ccard-sub">Ekta</div></div>
+    <a class="ccard" href="https://tp.media/r?campaign_id=120&marker=714449&p=9139&trs=512633&u=https%3A%2F%2Fairhelp.com" target="_blank"><div class="ccard-icon">💸</div><div class="ccard-name">Compensation</div><div class="ccard-sub">AirHelp</div></a>
+    <a class="ccard" href="https://tp.media/r?campaign_id=150&marker=714449&p=4487&trs=512633&u=https%3A%2F%2Fwegotrip.com" target="_blank"><div class="ccard-icon">🎧</div><div class="ccard-name">Audio Tours</div><div class="ccard-sub">WeGoTrip</div></a>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div class="app">
+  <div class="app-card">
+    <div class="app-inner">
+      <div class="app-tag">Coming Soon</div>
+      <div class="app-title">Your Scout,<br><em>In Your Pocket.</em></div>
+      <p class="app-desc">The Jetmeaway app is coming. Price alerts, offline trips, and mobile-only deals.</p>
+      <div class="app-stores">
+        <div class="app-st"><i class="fa-brands fa-apple"></i><div><div class="app-st-label">Coming soon</div><div class="app-st-name">App Store</div></div></div>
+        <div class="app-st"><i class="fa-brands fa-google-play"></i><div><div class="app-st-label">Coming soon</div><div class="app-st-name">Google Play</div></div></div>
+      </div>
+      <div class="app-launch">Summer 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRUST ═══ -->
+<div class="trust">
+  <div class="trust-grid">
+    <div class="tcard"><div class="tcard-icon free"><i class="fa-solid fa-magnifying-glass-dollar"></i></div><div class="tcard-name">100% Free</div><div class="tcard-desc">No fees, no markups. Prices come direct from providers.</div></div>
+    <div class="tcard"><div class="tcard-icon safe"><i class="fa-solid fa-shield-halved"></i></div><div class="tcard-name">Scout-Verified</div><div class="tcard-desc">Only trusted partners — Expedia, Booking.com, Airalo &amp; more.</div></div>
+    <div class="tcard"><div class="tcard-icon fast"><i class="fa-solid fa-bolt-lightning"></i></div><div class="tcard-name">One Search</div><div class="tcard-desc">Compare 20+ providers instantly. Find the best deal in seconds.</div></div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><img src="jetmeaway-logo.png" alt="Jetmeaway" class="footer-logo"><p class="footer-desc">Your AI-powered travel scout. Compare flights, hotels, packages, car hire, activities, transfers, eSIM &amp; insurance from 20+ providers.</p></div>
+      <div class="footer-col"><h4>Explore</h4><a href="#">Flights</a><a href="#">Hotels</a><a href="#">Packages</a><a href="#">Car Hire</a><a href="#">Activities</a><a href="#">eSIM</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Deal Alerts</h4><div class="footer-email"><input type="email" placeholder="Your email"><button>Join</button></div><p style="font-size:.58rem;margin-top:6px;color:var(--text-faint)">Price drops in your inbox.</p></div>
+    </div>
+    <div class="footer-div"></div>
+    <div class="footer-disc">
+      <div class="footer-disc-label">Affiliate Disclosure</div>
+      <p>Jetmeaway participates in the Expedia Affiliate Program (Partnerize), Travelpayouts Network, CJ Affiliate Network, and works with Booking.com, GetYourGuide, Viator, Klook, Tiqets, Airalo, Yesim, Ekta Traveling, Economy Bookings, Localrent, Qeeq, GetRentaCar, KiwiTaxi, Welcome Pickups, GetTransfer, AirHelp, Compensair, WeGoTrip, and Aviasales. We may receive compensation when you book through our links at no additional cost to you.</p>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Jetmeaway (jetmeaway.co.uk)</div>
+      <div class="footer-logos"><span>Expedia</span><span>Booking.com</span><span>GetYourGuide</span><span>Viator</span><span>Klook</span><span>Airalo</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  JETMEAWAY DARK SCOUT ENGINE                            ║
+   ╚══════════════════════════════════════════════════════════╝ */
+var TRACK='https://prf.hn/click/camref:1101l5FFR6/destination:';
+function tp(c,p,u){return'https://tp.media/r?campaign_id='+c+'&marker=714449&p='+p+'&trs=512633&u='+encodeURIComponent(u)}
+
+function toggleMob(){document.getElementById('mobM').classList.toggle('open');document.getElementById('mobO').classList.toggle('open')}
+
+document.querySelectorAll('.stab').forEach(function(t){t.addEventListener('click',function(){
+  document.querySelectorAll('.stab').forEach(function(x){x.classList.remove('active')});
+  document.querySelectorAll('.tpanel').forEach(function(x){x.classList.remove('active')});
+  this.classList.add('active');
+  document.getElementById('tp-'+this.getAttribute('data-tab')).classList.add('active');
+})});
+
+function switchTab(n){
+  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('active');if(t.getAttribute('data-tab')===n)t.classList.add('active')});
+  document.querySelectorAll('.tpanel').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('tp-'+n).classList.add('active');
+  document.querySelector('.search-card').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* Airports & Destinations */
+var AP=[{n:"London Heathrow",c:"LHR"},{n:"London Gatwick",c:"LGW"},{n:"London Stansted",c:"STN"},{n:"London Luton",c:"LTN"},{n:"Manchester",c:"MAN"},{n:"Birmingham",c:"BHX"},{n:"Edinburgh",c:"EDI"},{n:"Glasgow",c:"GLA"},{n:"Bristol",c:"BRS"},{n:"Newcastle",c:"NCL"},{n:"Leeds Bradford",c:"LBA"},{n:"Belfast",c:"BFS"},{n:"Dublin",c:"DUB"},{n:"Barcelona",c:"BCN"},{n:"Paris CDG",c:"CDG"},{n:"Amsterdam",c:"AMS"},{n:"Dubai",c:"DXB"},{n:"Abu Dhabi",c:"AUH"},{n:"Doha",c:"DOH"},{n:"Jeddah",c:"JED"},{n:"Riyadh",c:"RUH"},{n:"Medina",c:"MED"},{n:"New York JFK",c:"JFK"},{n:"Los Angeles",c:"LAX"},{n:"Miami",c:"MIA"},{n:"Orlando",c:"MCO"},{n:"Las Vegas",c:"LAS"},{n:"Chicago",c:"ORD"},{n:"San Francisco",c:"SFO"},{n:"Toronto",c:"YYZ"},{n:"Vancouver",c:"YVR"},{n:"Karachi",c:"KHI"},{n:"Lahore",c:"LHE"},{n:"Islamabad",c:"ISB"},{n:"Mumbai",c:"BOM"},{n:"Delhi",c:"DEL"},{n:"Goa",c:"GOX"},{n:"Bangalore",c:"BLR"},{n:"Bangkok",c:"BKK"},{n:"Phuket",c:"HKT"},{n:"Singapore",c:"SIN"},{n:"Kuala Lumpur",c:"KUL"},{n:"Bali",c:"DPS"},{n:"Tokyo",c:"NRT"},{n:"Seoul",c:"ICN"},{n:"Hong Kong",c:"HKG"},{n:"Beijing",c:"PEK"},{n:"Shanghai",c:"PVG"},{n:"Sydney",c:"SYD"},{n:"Melbourne",c:"MEL"},{n:"Auckland",c:"AKL"},{n:"Malaga",c:"AGP"},{n:"Alicante",c:"ALC"},{n:"Faro",c:"FAO"},{n:"Tenerife",c:"TFS"},{n:"Lanzarote",c:"ACE"},{n:"Antalya",c:"AYT"},{n:"Istanbul",c:"IST"},{n:"Dalaman",c:"DLM"},{n:"Athens",c:"ATH"},{n:"Corfu",c:"CFU"},{n:"Rhodes",c:"RHO"},{n:"Crete",c:"HER"},{n:"Rome",c:"FCO"},{n:"Milan",c:"MXP"},{n:"Venice",c:"VCE"},{n:"Nice",c:"NCE"},{n:"Lisbon",c:"LIS"},{n:"Cancun",c:"CUN"},{n:"Maldives",c:"MLE"},{n:"Cairo",c:"CAI"},{n:"Hurghada",c:"HRG"},{n:"Marrakech",c:"RAK"},{n:"Cape Town",c:"CPT"},{n:"Nairobi",c:"NBO"},{n:"Mauritius",c:"MRU"},{n:"Prague",c:"PRG"},{n:"Budapest",c:"BUD"},{n:"Frankfurt",c:"FRA"},{n:"Munich",c:"MUC"},{n:"Vienna",c:"VIE"},{n:"Copenhagen",c:"CPH"},{n:"Reykjavik",c:"KEF"},{n:"Colombo",c:"CMB"},{n:"Dhaka",c:"DAC"}];
+var DS=["Tenerife, Spain","Lanzarote, Spain","Gran Canaria, Spain","Mallorca, Spain","Ibiza, Spain","Barcelona, Spain","Malaga, Spain","Marbella, Spain","Alicante, Spain","Madrid, Spain","Algarve, Portugal","Lisbon, Portugal","Madeira, Portugal","Paris, France","Nice, France","Rome, Italy","Venice, Italy","Florence, Italy","Amalfi Coast, Italy","Lake Como, Italy","Corfu, Greece","Crete, Greece","Rhodes, Greece","Santorini, Greece","Mykonos, Greece","Athens, Greece","Antalya, Turkey","Istanbul, Turkey","Bodrum, Turkey","Cappadocia, Turkey","Paphos, Cyprus","Larnaca, Cyprus","Dubai, UAE","Abu Dhabi, UAE","Doha, Qatar","Jeddah, Saudi Arabia","Riyadh, Saudi Arabia","Medina, Saudi Arabia","Amman, Jordan","Cairo, Egypt","Hurghada, Egypt","Sharm El Sheikh, Egypt","Marrakech, Morocco","Cape Town, South Africa","Nairobi, Kenya","Zanzibar, Tanzania","Mauritius","Seychelles","Karachi, Pakistan","Lahore, Pakistan","Islamabad, Pakistan","Hunza Valley, Pakistan","Mumbai, India","Delhi, India","Goa, India","Jaipur, India","Kerala, India","Colombo, Sri Lanka","Kathmandu, Nepal","Beijing, China","Shanghai, China","Hong Kong","Tokyo, Japan","Osaka, Japan","Kyoto, Japan","Seoul, South Korea","Singapore","Bangkok, Thailand","Phuket, Thailand","Chiang Mai, Thailand","Kuala Lumpur, Malaysia","Bali, Indonesia","Maldives","Sydney, Australia","Melbourne, Australia","Auckland, New Zealand","New York, USA","Los Angeles, USA","Las Vegas, USA","Miami, USA","Orlando, USA","San Francisco, USA","Toronto, Canada","Vancouver, Canada","Cancun, Mexico","Barbados","Jamaica","St Lucia","Dominican Republic","Amsterdam, Netherlands","Berlin, Germany","Vienna, Austria","Prague, Czech Republic","Budapest, Hungary","Dubrovnik, Croatia","Copenhagen, Denmark","Reykjavik, Iceland","Dublin, Ireland","Edinburgh, UK","London, UK","Tbilisi, Georgia"];
+
+/* Autocomplete */
+document.querySelectorAll('.js-ac').forEach(function(inp){
+  var dd=inp.parentElement.querySelector('.acd'),type=inp.getAttribute('data-actype'),hl=-1;
+  inp.addEventListener('input',function(){
+    var v=this.value.toLowerCase();if(v.length<1){dd.classList.remove('show');return}
+    var m=[];
+    if(type==='airport')AP.forEach(function(a){if(a.n.toLowerCase().indexOf(v)>-1||a.c.toLowerCase().indexOf(v)>-1)m.push({t:a.n+' ('+a.c+')',c:a.c,i:'✈️'})});
+    else DS.forEach(function(d){if(d.toLowerCase().indexOf(v)>-1)m.push({t:d,c:'',i:'📍'})});
+    if(!m.length){dd.classList.remove('show');return}
+    dd.innerHTML=m.slice(0,7).map(function(x){return'<div class="aci" data-v="'+x.t+'" data-c="'+(x.c||'')+'"><span>'+x.i+'</span>'+x.t+(x.c?'<span class="acc">'+x.c+'</span>':'')+'</div>'}).join('');
+    dd.classList.add('show');hl=-1;
+    dd.querySelectorAll('.aci').forEach(function(it){it.addEventListener('click',function(){inp.value=this.getAttribute('data-v');if(this.getAttribute('data-c'))inp.setAttribute('data-code',this.getAttribute('data-c'));dd.classList.remove('show')})});
+  });
+  inp.addEventListener('keydown',function(e){var its=dd.querySelectorAll('.aci');if(e.key==='ArrowDown'){hl=Math.min(hl+1,its.length-1);uhl(its)}else if(e.key==='ArrowUp'){hl=Math.max(hl-1,0);uhl(its)}else if(e.key==='Enter'&&hl>=0){its[hl].click();e.preventDefault()}});
+  function uhl(its){its.forEach(function(x,i){x.classList.toggle('hl',i===hl)})}
+  document.addEventListener('click',function(e){if(!inp.contains(e.target)&&!dd.contains(e.target))dd.classList.remove('show')});
+});
+
+/* ═══ SCOUT SEARCH ═══ */
+function doSearch(){
+  var tab=document.querySelector('.stab.active').getAttribute('data-tab');
+  if(tab==='flights'){
+    var fr=document.getElementById('f-from').value||'London',to=document.getElementById('f-to').value||'Dubai',dep=document.getElementById('f-dep').value,ret=document.getElementById('f-ret').value,pax=parseInt(document.getElementById('f-pax').value)||2;
+    var cls={'economy':'economy','premium economy':'premiumeconomy','business':'business','first':'first'};
+    var c=cls[document.getElementById('f-cls').value.toLowerCase()]||'economy';
+    window.open(TRACK+'https://www.expedia.co.uk/Flights-search?trip=roundtrip&leg1=from:'+encodeURIComponent(fr)+',to:'+encodeURIComponent(to)+',departure:'+dep+'TANYT&leg2=from:'+encodeURIComponent(to)+',to:'+encodeURIComponent(fr)+',departure:'+ret+'TANYT&passengers=adults:'+pax+'&options=cabinclass:'+c,'_blank');
+  }
+  else if(tab==='hotels'){
+    var d=document.getElementById('h-dest').value||'Marbella',ci=document.getElementById('h-ci').value,co=document.getElementById('h-co').value,g=parseInt(document.getElementById('h-guests').value)||2,r=parseInt(document.getElementById('h-rooms').value)||1;
+    window.open(TRACK+'https://www.expedia.co.uk/Hotel-Search?destination='+encodeURIComponent(d)+'&startDate='+ci+'&endDate='+co+'&adults='+g+'&rooms='+r+'&sort=RECOMMENDED','_blank');
+    window.open('https://www.booking.com/searchresults.html?ss='+encodeURIComponent(d)+'&checkin='+ci+'&checkout='+co+'&group_adults='+g+'&no_rooms='+r+'&group_children=0','_blank');
+  }
+  else if(tab==='packages'){
+    var fr=document.getElementById('p-from').value||'Manchester',to=document.getElementById('p-to').value||'Tenerife',dep=document.getElementById('p-dep').value,n=parseInt(document.getElementById('p-dur').value)||7,pax=parseInt(document.getElementById('p-pax').value)||2;
+    var end='';if(dep){var s=new Date(dep);s.setDate(s.getDate()+n);end=s.toISOString().split('T')[0]}
+    var fc=document.getElementById('p-from').getAttribute('data-code')||fr;
+    window.open(TRACK+'https://www.expedia.com/go/package/search/FlightHotel/'+dep+'/'+end+'?FromAirport='+encodeURIComponent(fc)+'&Destination='+encodeURIComponent(to)+'&NumRoom=1&NumAdult='+pax,'_blank');
+  }
+  else if(tab==='cars'){
+    var loc=document.getElementById('c-loc').value||'Malaga',d1=document.getElementById('c-pu').value,d2=document.getElementById('c-do').value;
+    window.open(TRACK+'https://www.expedia.co.uk/carsearch?locn='+encodeURIComponent(loc)+'&date1='+d1+'&date2='+d2+'&time1=1000&time2=1000','_blank');
+    if(d1&&d2){var pd=d1.split('-'),dd=d2.split('-');window.open(tp(10,2018,'https://www.economybookings.com/en/cars/results?crcy=GBP&lang=en&age=35&py='+pd[0]+'&pm='+pd[1]+'&pd='+pd[2]+'&dy='+dd[0]+'&dm='+dd[1]+'&dd='+dd[2]+'&pt=1000&dt=1000'),'_blank')}
+  }
+  else if(tab==='activities'){
+    var dest=document.getElementById('a-dest').value||'Antalya, Turkey',date=document.getElementById('a-date').value;
+    var dl=dest.toLowerCase().replace(/,.*$/,'').trim();
+    var GS={'antalya':'antalya-l172','istanbul':'istanbul-l56','barcelona':'barcelona-l45','paris':'paris-l16','rome':'rome-l33','dubai':'dubai-l173','london':'london-l57','tokyo':'tokyo-l200','bali':'bali-l599','bangkok':'bangkok-l169','singapore':'singapore-l230','athens':'athens-l125','lisbon':'lisbon-l42','amsterdam':'amsterdam-l36','prague':'prague-l40','cancun':'cancun-l182','sydney':'sydney-l272','marrakech':'marrakech-l194'};
+    var slug='';for(var k in GS){if(dl.indexOf(k)>-1){slug=GS[k];break}}
+    var url=slug?'https://www.getyourguide.com/'+slug+'/':'https://www.getyourguide.com/s/?q='+encodeURIComponent(dest);
+    url+=(url.indexOf('?')>-1?'&':'?')+'partner_id=SIT13X5&utm_medium=online_publisher';
+    if(date)url+='&date_from='+date;
+    window.open(url,'_blank');
+    window.open(tp(137,4110,'https://www.klook.com/search/result/?keyword='+encodeURIComponent(dest)),'_blank');
+  }
+  else if(tab==='transfers'){
+    window.open(tp(1,647,'https://kiwitaxi.com'),'_blank');
+    window.open(tp(627,8919,'https://welcomepickups.com'),'_blank');
+  }
+  else if(tab==='esim'){
+    var dl=(document.getElementById('e-dest').value||'').toLowerCase();
+    var EC={'turkey':'turkey','spain':'spain','france':'france','italy':'italy','usa':'united-states','united states':'united-states','uk':'united-kingdom','dubai':'united-arab-emirates','uae':'united-arab-emirates','saudi':'saudi-arabia','egypt':'egypt','thailand':'thailand','japan':'japan','india':'india','pakistan':'pakistan','australia':'australia','singapore':'singapore','malaysia':'malaysia','indonesia':'indonesia','maldives':'maldives','mexico':'mexico','brazil':'brazil','canada':'canada','germany':'germany','greece':'greece','portugal':'portugal','morocco':'morocco','china':'china'};
+    var co='';for(var k in EC){if(dl.indexOf(k)>-1){co=EC[k];break}}
+    window.open(tp(541,8310,co?'https://www.airalo.com/'+co+'-esim':'https://www.airalo.com/'),'_blank');
+    window.open(tp(224,5998,co?'https://yesim.app/country/'+co+'/':'https://yesim.app/'),'_blank');
+  }
+  else if(tab==='insurance'){
+    window.open(tp(225,5869,'https://ektatraveling.com'),'_blank');
+  }
+}
+</script>
+</body>
+</html>

@@ -432,8 +432,9 @@ select.si{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width=
         <div class="sg"><div class="sf full"><label class="sl">Destination</label><input class="si js-ac" data-actype="destination" placeholder="Where are you travelling?" id="i-dest" autocomplete="off"><div class="acd"></div></div></div>
         <div class="search-info">Medical, cancellation &amp; luggage cover from <strong>Ekta Traveling</strong></div>
       </div>
-
-      <button class="search-go" onclick="doSearch()"><i class="fa-solid fa-magnifying-glass"></i> Scout Deals</button>
+<button class="search-go" id="scout-btn" onclick="handleScoutSearch()">
+  <i class="fa-solid fa-magnifying-glass"></i> Scout Deals
+</button>
     </div>
   </div>
 
@@ -735,6 +736,30 @@ function doSearch(){
   }
   else if(tab==='insurance'){
     window.open(tp(225,5869,'https://ektatraveling.com'),'_blank');
+  }
+}
+<script>
+async function handleScoutSearch() {
+  const btn = document.getElementById('scout-btn');
+  // Visual feedback for the user
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Scouting...';
+  btn.style.opacity = '0.7';
+
+  try {
+    // This calls your /api/scout.js file on Vercel
+    const response = await fetch('/api/scout');
+    const data = await response.json();
+    
+    console.log("Scout Result:", data);
+    alert("Scout is Live! Result: " + data.message);
+    
+  } catch (error) {
+    console.error("Scout Error:", error);
+    alert("Scout is warming up. Check Vercel logs!");
+  } finally {
+    // Reset button
+    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Scout Deals';
+    btn.style.opacity = '1';
   }
 }
 </script>

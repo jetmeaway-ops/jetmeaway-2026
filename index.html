@@ -758,7 +758,37 @@ async function handleScoutSearch() {
     alert("Scout is warming up. Check Vercel logs!");
   } finally {
     // Reset button
-    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Scout Deals';
+   <script>
+  // 1. Navigation & UI (Fixes the "Freeze")
+  function toggleMob() {
+    document.querySelector('.nav-links').classList.toggle('active');
+  }
+
+  // 2. The Scout Engine (Connects to Vercel)
+  async function handleScoutSearch() {
+    const btn = document.getElementById('scout-btn');
+    if (!btn) return;
+    
+    // Start the loading animation
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Scouting...';
+    btn.style.opacity = '0.7';
+
+    try {
+      const response = await fetch('/api/scout');
+      const data = await response.json();
+      alert("JetMeAway Scout: " + (data.message || "Connected to Server"));
+    } catch (error) {
+      console.error("Scout Error:", error);
+      alert("Scout is warming up! Please refresh in 30 seconds.");
+    } finally {
+      // Reset the button back to original state
+      btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Scout Deals';
+      btn.style.opacity = '1';
+    }
+  }
+</script>
+</body>
+</html>
     btn.style.opacity = '1';
   }
 }
